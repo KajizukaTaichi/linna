@@ -38,11 +38,7 @@
         }
 
         function updateEditor() {
-            let show = insertString(
-                buffer,
-                cursor,
-                "<span id='cursor'>&#124;</span>",
-            );
+            let show = insertString(buffer, cursor, "|");
             let editor = document.getElementById("editor");
             editor.textContent = "";
 
