@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Linna: code editor that doesn't make you anger</title>
+    </head>
+
+    <body>
+        <h1>Linna: code editor that doesn't make you anger</h1>
+        <div id="editor">えっち</div>
+    </body>
+
+    <script>
+        let buffer = "";
+        let cursor = 0;
+
+        function insertString(originalString, index, stringToInsert) {
+            return (
+                originalString.slice(0, index) +
+                stringToInsert +
+                originalString.slice(index)
+            );
+        }
+
+        function removeCharAtIndex(str, index) {
+            return str.slice(0, index) + str.slice(index + 1);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            event.preventDefault();
+            document.addEventListener("keydown", function (event) {
+                console.log(event.code);
+                if (event.code === "ArrowLeft") {
+                    cursor -= 1;
+                } else if (event.code === "ArrowRight") {
+                    cursor += 1;
+                } else if (event.code === "ArrowUp") {
+                    cursor -= 15;
+                } else if (event.code === "ArrowDown") {
+                    cursor += 15;
+                } else if (event.code === "Backspace") {
+                    if (cursor != 0) {
+                        buffer = removeCharAtIndex(buffer, cursor - 1);
+                        cursor -= 1;
+                    }
+                } else if (event.code === "Enter") {
+                    buffer = insertString(buffer, cursor, "\n");
+                    cursor += 1;
+                } else if (event.code === "Tab") {
+                    buffer = insertString(buffer, cursor, "    ");
+                    cursor += 4;
+                } else if (
+                    event.code === "ShiftLeft" ||
+                    event.code === "ShiftRight" ||
+                    event.code === "MetaLeft" ||
+                    event.code === "MetaRight" ||
+                    event.code === "ControlLeft" ||
+                    event.code === "ControlRight"
+                ) {
+                } else {
+                    if (event.shiftKey) {
+                        buffer = insertString(
+                            buffer,
+                            cursor,
+                            event.key.toUpperCase(),
+                        );
+                    } else {
+                        buffer = insertString(buffer, cursor, event.key);
+                    }
+                    cursor += 1;
+                }
+
+                if (cursor > buffer.length) {
+                    cursor = buffer.length;
+                }
+                if (cursor < 0) {
+                    cursor = 0;
+                }
+
+                let show = insertString(buffer, cursor, "&#124;");
+                let editor = document.getElementById("editor");
+                editor.textContent = "";
+
+                for (line of show.split("\n")) {
+                    let elm = document.createElement("pre");
+                    elm.className = "line";
+                    elm.innerHTML = line;
+                    editor.appendChild(elm);
+                }
+            });
+        });
+    </script>
+
+    <style>
+        body {
+            font-family: monospace;
+            background-color: gray;
+            color: white;
+        }
+
+        #cursor {
+            background-color: white;
+            color: black;
+        }
+
+        .line {
+            border-bottom-style: solid;
+            border-bottom-color: gray;
+            border-bottom-width: 1px;
+        }
+
+        #editor {
+            padding: 1vh;
+            background-color: black;
+            color: white;
+            height: 80vh;
+        }
+    </style>
+</html>
