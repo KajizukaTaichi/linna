@@ -70,16 +70,24 @@
                 event.code === "ArrowUp" &&
                 event.ctrlKey | event.metaKey
             ) {
-                cursor -= 50;
+                cursor = 0;
             } else if (
                 event.code === "ArrowDown" &&
                 event.ctrlKey | event.metaKey
             ) {
-                cursor += 50;
+                cursor += buffer.length;
             } else if (event.code === "ArrowUp") {
-                cursor -= 10;
+                cursor -=
+                    buffer.slice(0, cursor).length -
+                    buffer.slice(0, cursor).lastIndexOf("\n");
             } else if (event.code === "ArrowDown") {
-                cursor += 10;
+                console.log(
+                    buffer.slice(cursor).length -
+                        buffer.slice(cursor).indexOf("\n"),
+                );
+                cursor +=
+                    buffer.slice(cursor).length -
+                    buffer.slice(cursor).lastIndexOf("\n");
             } else if (
                 event.code === "Backspace" &&
                 event.ctrlKey | event.metaKey
