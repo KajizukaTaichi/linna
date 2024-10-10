@@ -11,9 +11,11 @@
     <body>
         <p class="title">Linna</p>
         <p class="subtitle">code editor that doesn't make you anger</p>
+
         <button onclick="navigator.clipboard.writeText(buffer)" class="button">
             Save
         </button>
+
         <hr class="has-background-grey-lighter" />
         <div id="editor"></div>
     </body>
@@ -21,6 +23,7 @@
     <script>
         let buffer = "";
         let cursor = 0;
+        let history = [];
 
         function insertString(originalString, index, stringToInsert) {
             return (
@@ -61,15 +64,30 @@
 
         document.addEventListener("keydown", function (event) {
             event.preventDefault();
-            console.log(event.code);
+
+            let is_back = false;
             if (event.code === "ArrowLeft") {
                 cursor -= 1;
             } else if (event.code === "ArrowRight") {
                 cursor += 1;
             } else if (event.code === "ArrowUp") {
-                cursor -= 15;
+                cursor -= 10;
             } else if (event.code === "ArrowDown") {
-                cursor += 15;
+                cursor += 10;
+            } else if (
+                event.code === "Backspace" &&
+                event.ctrlKey | event.metaKey
+            ) {
+                if (cursor != 0) {
+                    for (var i = 0; i < 5; i++) {
+                        buffer = removeCharAtIndex(buffer, cursor - 1);
+                        cursor -= 1;
+                    }
+                }
+            } else if (event.code === "KeyZ" && event.ctrlKey | event.metaKey) {
+                let back = history.pop();
+                buffer = back == undefined ? buffer : back;
+                is_back = true;
             } else if (event.code === "Backspace") {
                 if (cursor != 0) {
                     buffer = removeCharAtIndex(buffer, cursor - 1);
@@ -111,6 +129,9 @@
             }
 
             updateEditor();
+            if (!is_back) {
+                history.push(buffer);
+            }
         });
 
         document.addEventListener("DOMContentLoaded", updateEditor);
