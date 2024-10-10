@@ -81,10 +81,6 @@
                     buffer.slice(0, cursor).length -
                     buffer.slice(0, cursor).lastIndexOf("\n");
             } else if (event.code === "ArrowDown") {
-                console.log(
-                    buffer.slice(cursor).length -
-                        buffer.slice(cursor).indexOf("\n"),
-                );
                 cursor +=
                     buffer.slice(cursor).length -
                     buffer.slice(cursor).lastIndexOf("\n");
