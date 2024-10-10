@@ -9,7 +9,8 @@
     </head>
 
     <body>
-        <p class="title">Linna: code editor that doesn't make you anger</p>
+        <p class="title">Linna</p>
+        <p class="subtitle">code editor that doesn't make you anger</p>
         <button onclick="navigator.clipboard.writeText(buffer)" class="button">
             Save
         </button>
@@ -33,82 +34,86 @@
             return str.slice(0, index) + str.slice(index + 1);
         }
 
-        document.addEventListener("DOMContentLoaded", function () {
-            document.addEventListener("keydown", function (event) {
-                event.preventDefault();
-                console.log(event.code);
-                if (event.code === "ArrowLeft") {
+        function updateEditor() {
+            let show = insertString(
+                buffer,
+                cursor,
+                "<span id='cursor'>&#124;</span>",
+            );
+            let editor = document.getElementById("editor");
+            editor.textContent = "";
+
+            let n = 1;
+            for (line of show.split("\n")) {
+                let elm = document.createElement("pre");
+                elm.className = "line";
+                elm.innerHTML =
+                    String(n).padStart(
+                        String(show.split("\n").length).length,
+                        " ",
+                    ) +
+                    "<span class='ln'>&#124;</span>" +
+                    (line == "" ? " " : line);
+                editor.appendChild(elm);
+                n++;
+            }
+        }
+
+        document.addEventListener("keydown", function (event) {
+            event.preventDefault();
+            console.log(event.code);
+            if (event.code === "ArrowLeft") {
+                cursor -= 1;
+            } else if (event.code === "ArrowRight") {
+                cursor += 1;
+            } else if (event.code === "ArrowUp") {
+                cursor -= 15;
+            } else if (event.code === "ArrowDown") {
+                cursor += 15;
+            } else if (event.code === "Backspace") {
+                if (cursor != 0) {
+                    buffer = removeCharAtIndex(buffer, cursor - 1);
                     cursor -= 1;
-                } else if (event.code === "ArrowRight") {
-                    cursor += 1;
-                } else if (event.code === "ArrowUp") {
-                    cursor -= 15;
-                } else if (event.code === "ArrowDown") {
-                    cursor += 15;
-                } else if (event.code === "Backspace") {
-                    if (cursor != 0) {
-                        buffer = removeCharAtIndex(buffer, cursor - 1);
-                        cursor -= 1;
-                    }
-                } else if (event.code === "Enter") {
-                    buffer = insertString(buffer, cursor, "\n");
-                    cursor += 1;
-                } else if (event.code === "Tab") {
-                    buffer = insertString(buffer, cursor, "    ");
-                    cursor += 4;
-                } else if (
-                    event.code === "ShiftLeft" ||
-                    event.code === "ShiftRight" ||
-                    event.code === "MetaLeft" ||
-                    event.code === "MetaRight" ||
-                    event.code === "ControlLeft" ||
-                    event.code === "ControlRight" ||
-                    event.code === "Escape"
-                ) {
+                }
+            } else if (event.code === "Enter") {
+                buffer = insertString(buffer, cursor, "\n");
+                cursor += 1;
+            } else if (event.code === "Tab") {
+                buffer = insertString(buffer, cursor, "    ");
+                cursor += 4;
+            } else if (
+                event.code === "ShiftLeft" ||
+                event.code === "ShiftRight" ||
+                event.code === "MetaLeft" ||
+                event.code === "MetaRight" ||
+                event.code === "ControlLeft" ||
+                event.code === "ControlRight" ||
+                event.code === "Escape"
+            ) {
+            } else {
+                if (event.shiftKey) {
+                    buffer = insertString(
+                        buffer,
+                        cursor,
+                        event.key.toUpperCase(),
+                    );
                 } else {
-                    if (event.shiftKey) {
-                        buffer = insertString(
-                            buffer,
-                            cursor,
-                            event.key.toUpperCase(),
-                        );
-                    } else {
-                        buffer = insertString(buffer, cursor, event.key);
-                    }
-                    cursor += 1;
+                    buffer = insertString(buffer, cursor, event.key);
                 }
+                cursor += 1;
+            }
 
-                if (cursor > buffer.length) {
-                    cursor = buffer.length;
-                }
-                if (cursor < 0) {
-                    cursor = 0;
-                }
+            if (cursor > buffer.length) {
+                cursor = buffer.length;
+            }
+            if (cursor < 0) {
+                cursor = 0;
+            }
 
-                let show = insertString(
-                    buffer,
-                    cursor,
-                    "<span id='cursor'>&#124;</span>",
-                );
-                let editor = document.getElementById("editor");
-                editor.textContent = "";
-
-                let n = 1;
-                for (line of show.split("\n")) {
-                    let elm = document.createElement("pre");
-                    elm.className = "line";
-                    elm.innerHTML =
-                        String(n).padStart(
-                            String(show.split("\n").length).length,
-                            " ",
-                        ) +
-                        "<span class='ln'>&#124;</span>" +
-                        (line == "" ? " " : line);
-                    editor.appendChild(elm);
-                    n++;
-                }
-            });
+            updateEditor();
         });
+
+        document.addEventListener("DOMContentLoaded", updateEditor);
     </script>
 
     <style>
