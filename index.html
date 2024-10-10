@@ -9,11 +9,11 @@
     </head>
 
     <body>
-        <p class="title">Linna: code editor that doesn't make you anger</><br>
+        <p class="title">Linna: code editor that doesn't make you anger</p>
         <button onclick="navigator.clipboard.writeText(buffer)" class="button">
-            Copy
+            Save
         </button>
-        <hr>
+        <hr class="has-background-grey-lighter" />
         <div id="editor"></div>
     </body>
 
@@ -93,11 +93,19 @@
                 let editor = document.getElementById("editor");
                 editor.textContent = "";
 
+                let n = 1;
                 for (line of show.split("\n")) {
                     let elm = document.createElement("pre");
                     elm.className = "line";
-                    elm.innerHTML = (line == "") ? " " : line;
+                    elm.innerHTML =
+                        String(n).padStart(
+                            String(show.split("\n").length).length,
+                            " ",
+                        ) +
+                        "<span class='ln'>&#124;</span>" +
+                        (line == "" ? " " : line);
                     editor.appendChild(elm);
+                    n++;
                 }
             });
         });
@@ -112,13 +120,17 @@
         }
 
         #cursor {
-            color: red;
+            color: blue;
         }
 
         .line {
             padding: 0;
             background-color: white;
             border-bottom: 1px solid whitesmoke;
+        }
+
+        .ln {
+            color: whitesmoke;
         }
 
         #editor {
