@@ -48,10 +48,10 @@
                 elm.className = "line";
                 elm.innerText =
                     String(n).padStart(
-                        String(show.split("\n").length).length,
+                        String(show.split("\n").length).length + 1,
                         " ",
                     ) +
-                    " " +
+                    "  " +
                     (line == "" ? " " : line);
                 editor.appendChild(elm);
                 n++;
