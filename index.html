@@ -2,10 +2,18 @@
 <html lang="en">
     <head>
         <title>Linna: code editor that doesn't make you anger</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css"
+        />
     </head>
 
     <body>
-        <h1>Linna: code editor that doesn't make you anger</h1>
+        <p class="title">Linna: code editor that doesn't make you anger</><br>
+        <button onclick="navigator.clipboard.writeText(buffer)" class="button">
+            Copy
+        </button>
+        <hr>
         <div id="editor"></div>
     </body>
 
@@ -54,7 +62,8 @@
                     event.code === "MetaLeft" ||
                     event.code === "MetaRight" ||
                     event.code === "ControlLeft" ||
-                    event.code === "ControlRight"
+                    event.code === "ControlRight" ||
+                    event.code === "Escape"
                 ) {
                 } else {
                     if (event.shiftKey) {
@@ -87,7 +96,7 @@
                 for (line of show.split("\n")) {
                     let elm = document.createElement("pre");
                     elm.className = "line";
-                    elm.innerHTML = line;
+                    elm.innerHTML = (line == "") ? " " : line;
                     editor.appendChild(elm);
                 }
             });
@@ -96,9 +105,10 @@
 
     <style>
         body {
+            padding: 1vh;
             font-family: monospace;
-            background-color: gray;
-            color: white;
+            background-color: whitesmoke;
+            color: black;
         }
 
         #cursor {
@@ -106,15 +116,14 @@
         }
 
         .line {
-            border-bottom-style: solid;
-            border-bottom-color: gray;
-            border-bottom-width: 1px;
+            padding: 0;
+            background-color: white;
+            border-bottom: 1px solid whitesmoke;
         }
 
         #editor {
-            padding: 1vh;
-            background-color: black;
-            color: white;
+            background-color: white;
+            color: black;
             height: 80vh;
         }
     </style>
