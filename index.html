@@ -88,6 +88,11 @@
                 let back = history.pop();
                 buffer = back == undefined ? buffer : back;
                 is_back = true;
+            } else if (event.code === "KeyV" && event.ctrlKey | event.metaKey) {
+                navigator.clipboard.readText().then((text) => {
+                    buffer = insertString(buffer, cursor, text);
+                    cursor += text.length;
+                });
             } else if (event.code === "Backspace") {
                 if (cursor != 0) {
                     buffer = removeCharAtIndex(buffer, cursor - 1);
@@ -108,6 +113,7 @@
                 event.code === "ControlRight" ||
                 event.code === "Escape"
             ) {
+                // No processing
             } else {
                 if (event.shiftKey) {
                     buffer = insertString(
