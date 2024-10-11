@@ -136,6 +136,9 @@
             } else if (event.key == "[") {
                 buffer = insertString(buffer, cursor, "[]");
                 cursor += 1;
+            } else if (event.key == "\"") {
+                buffer = insertString(buffer, cursor, "\"\"");
+                cursor += 1;
             } else {
                 if (event.shiftKey) {
                     buffer = insertString(
