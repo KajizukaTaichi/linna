@@ -90,7 +90,7 @@
                 event.ctrlKey | event.metaKey
             ) {
                 if (cursor != 0) {
-                    let count = buffer.slice(0, cursor).length - buffer.slice(0, cursor).lastIndexOf("\n");
+                    let count = buffer.slice(0, cursor).length - buffer.slice(0, cursor).lastIndexOf("\n") - 1;
                     for (var i = 0; i < count; i++) {
                         buffer = removeCharAtIndex(buffer, cursor - 1);
                         cursor -= 1;
