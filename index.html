@@ -33,6 +33,29 @@
             return str.slice(0, index) + str.slice(index + 1);
         }
 
+        function settingTheme() {
+            // Setting dark theme
+            const theme =  (new URLSearchParams(window.location.search)).get("theme");
+            if (theme === "dark") {
+                let editor = document.getElementById("editor").style;
+                editor.backgroundColor = "black";
+                editor.color = "white";
+
+                let lines = document.querySelectorAll(".line");
+                for (line of lines) {
+                    line.style.color = "whitesmoke";
+                    line.style.borderBottomColor = "rgb(40, 40, 40)"
+                }
+
+                let body = document.body.style;
+                body.backgroundColor = "rgb(40, 40, 40)";
+                body.color = "white";
+
+                document.querySelector(".title").style.color = "white";
+                document.querySelector(".subtitle").style.color = "white";
+            }
+        }
+
         function updateEditor() {
             let show = insertString(buffer, cursor, "|");
             let editor = document.getElementById("editor");
@@ -55,27 +78,6 @@
 
             let status = document.getElementById("status");
             status.innerText = `Buffer length: ${buffer.length}, Cursor position: ${cursor}`;
-
-            // Setting dark theme
-            const theme =  (new URLSearchParams(window.location.search)).get("theme");
-            if (theme === "dark") {
-                let editor = document.getElementById("editor").style;
-                editor.backgroundColor = "black";
-                editor.color = "white";
-
-                let lines = document.querySelectorAll(".line");
-                for (line of lines) {
-                    line.style.color = "whitesmoke";
-                    line.style.borderBottomColor = "rgb(40, 40, 40)"
-                }
-
-                let body = document.body.style;
-                body.backgroundColor = "rgb(40, 40, 40)";
-                body.color = "white";
-
-                document.querySelector(".title").style.color = "white";
-                document.querySelector(".subtitle").style.color = "white";
-            }
         }
 
         document.addEventListener("keydown", function (event) {
@@ -203,13 +205,23 @@
                 cursor = 0;
             }
 
-            updateEditor();
             if (!is_back) {
                 history.push(buffer);
             }
+
+            updateEditor();
+            settingTheme();
         });
 
-        document.addEventListener("DOMContentLoaded", updateEditor);
+        document.addEventListener("DOMContentLoaded", function() {
+            updateEditor();
+            settingTheme();
+
+            let temp = document.createElement("input");
+            document.body.appendChild(temp);
+            temp.style.display = "none";
+            temp.focus();
+        });
     </script>
 
     <style>
