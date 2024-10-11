@@ -76,8 +76,11 @@
                     buffer.slice(0, cursor).length -
                     buffer.slice(0, cursor).lastIndexOf("\n");
             } else if (event.code === "ArrowDown") {
-                let nextLine = buffer.slice(cursor).indexOf("\n") + 1;
-                cursor += (nextLine + buffer.slice(nextLine).indexOf("\n"));
+                if (buffer[cursor] != "\n") {
+                    cursor += (cursor + buffer.slice(cursor).indexOf("\n")) + 1;
+                } else {
+                    cursor += 1;
+                }
             } else if (
                 event.code === "Backspace" &&
                 event.ctrlKey | event.metaKey
