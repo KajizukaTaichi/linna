@@ -110,8 +110,7 @@
                     updateEditor();
                 });
             } else if (event.code === "KeyC" && event.ctrlKey | event.metaKey) {
-                console.log(window.getSelection().toString());
-                navigator.clipboard.writeText(window.getSelection().toString());
+                navigator.clipboard.writeText(buffer);
             } else if (
                 event.code === "ShiftLeft" ||
                 event.code === "ShiftRight" ||
