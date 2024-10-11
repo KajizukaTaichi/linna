@@ -13,6 +13,7 @@
         <p class="subtitle">code editor that doesn't make you anger</p>
         <hr class="has-background-grey-lighter" />
         <div id="editor"></div>
+        <p id="status"></p>
     </body>
 
     <script>
@@ -51,6 +52,9 @@
                 editor.appendChild(elm);
                 n++;
             }
+
+            let status = document.getElementById("status");
+            status.innerText = `Buffer length: ${buffer.length}, Cursor position: ${cursor}`;
         }
 
         document.addEventListener("keydown", function (event) {
@@ -194,7 +198,7 @@
             overflow: scroll;
             background-color: white;
             color: black;
-            height: 85vh;
+            height: 80vh;
         }
     </style>
 </html>
