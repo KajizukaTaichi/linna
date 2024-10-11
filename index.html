@@ -11,11 +11,6 @@
     <body>
         <p class="title">Linna</p>
         <p class="subtitle">code editor that doesn't make you anger</p>
-
-        <button onclick="navigator.clipboard.writeText(buffer)" class="button">
-            Save
-        </button>
-
         <hr class="has-background-grey-lighter" />
         <div id="editor"></div>
     </body>
@@ -101,7 +96,10 @@
                 navigator.clipboard.readText().then((text) => {
                     buffer = insertString(buffer, cursor, text);
                     cursor += text.length;
+                    updateEditor();
                 });
+            } else if (event.code === "KeyC" && event.ctrlKey | event.metaKey) {
+                navigator.clipboard.writeText(buffer)
             } else if (event.code === "Backspace") {
                 if (cursor != 0) {
                     buffer = removeCharAtIndex(buffer, cursor - 1);
