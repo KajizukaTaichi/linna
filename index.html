@@ -33,8 +33,7 @@
             return str.slice(0, index) + str.slice(index + 1);
         }
 
-        function settingTheme() {
-            // Setting dark theme
+        function settingDarkTheme() {
             const theme =  (new URLSearchParams(window.location.search)).get("theme");
             if (theme === "dark") {
                 let editor = document.getElementById("editor").style;
@@ -210,17 +209,12 @@
             }
 
             updateEditor();
-            settingTheme();
+            settingDarkTheme();
         });
 
         document.addEventListener("DOMContentLoaded", function() {
             updateEditor();
-            settingTheme();
-
-            let temp = document.createElement("input");
-            document.body.appendChild(temp);
-            temp.style.display = "none";
-            temp.focus();
+            settingDarkTheme();
         });
     </script>
 
