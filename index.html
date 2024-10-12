@@ -103,7 +103,7 @@
                     buffer.slice(0, cursor).lastIndexOf("\n");
             } else if (event.code === "ArrowDown") {
                 if (buffer[cursor] != "\n") {
-                    cursor += (cursor + buffer.slice(cursor).indexOf("\n")) + 1;
+                    cursor += buffer.slice(cursor).indexOf("\n") + 1;
                 } else {
                     cursor += 1;
                 }
