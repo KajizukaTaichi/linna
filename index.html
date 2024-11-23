@@ -56,21 +56,27 @@
         }
 
         function updateEditor() {
-            let show = insertString(buffer, cursor, "|");
+            let show = insertString(buffer, cursor, `<span id="cursor"></span>`);
             let editor = document.getElementById("editor");
             editor.textContent = "";
 
             let n = 1;
             for (line of show.split("\n")) {
-                let elm = document.createElement("pre");
+                let elm = document.createElement("p");
                 elm.className = "line";
-                elm.innerText =
+                elm.innerHTML =
                     String(n).padStart(
                         String(show.split("\n").length).length + 1,
                         " ",
                     ) +
                     "  " +
-                    (line == "" ? " " : line);
+                    (line == "" ? " " : line)
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(`&lt;span id="cursor"&gt;&lt;/span&gt;`, `<span id="cursor"></span>`)
+                        .replace(/(def|return|class|if|else|for|while|try|except|import|from)/g, `<span style="color: blueviolet">$1</span>`)
+                        .replace(/(isinstance|input|range|print|list|str|int|dict)/g, `<span style="color: blue">$1</span>`)
+                        .replace(/(\(|\)|{|}|\[|\])/g, `<span style="color: darkcyan">$1</span>`);
                 editor.appendChild(elm);
                 n++;
             }
@@ -228,6 +234,14 @@
             height: 100vh;
         }
 
+        #cursor {
+            padding: 0;
+            margin: 0;
+            width: 0px;
+            height: 1em;
+            border: 1px solid gray;
+        }
+
         .line {
             padding: 0;
             background-color: transparent;
@@ -235,6 +249,7 @@
         }
 
         #editor {
+            white-space: pre;
             font-size: larger;
             user-select: text;
             overflow: scroll;
